@@ -1,21 +1,25 @@
 import React from 'react';
-import {ListView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ListView, StyleSheet, View} from 'react-native';
 import ViewFlight from "./ViewFlight";
+import {FlightController} from "../../controller/FlightController";
 
 export default class Flights extends React.Component {
     constructor(props) {
         super(props);
 
+        this.flightController = new FlightController();
+
+        const flights = this.flightController.getAll();
         let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.Id !== r2.Id});
         this.state = {
-            dataSource: dataSource.cloneWithRows(global.flights)
+            dataSource: dataSource.cloneWithRows(flights)
         }
     }
 
     renderRow(flight) {
         return (
             <View>
-                <ViewFlight flight={flight} navigation={this.props.navigation}/>
+                <ViewFlight id={flight.id} navigation={this.props.navigation}/>
             </View>
         );
     }
@@ -33,12 +37,4 @@ export default class Flights extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'stretch',
-    },
-});
+const styles = StyleSheet.create({});

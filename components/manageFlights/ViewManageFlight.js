@@ -1,28 +1,20 @@
 import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
+import {FlightController} from "../../controller/FlightController";
 
 export default class ViewFlight extends React.Component {
     constructor(props) {
         super(props);
 
+        this.flightController = new FlightController();
+
         this.state = {
-            flight: this.props.flight,
+            id: this.props.id,
         };
     }
 
-    editFlight(flight) {
-        this.setState(previousState => {
-            return {
-                id: this.props.id,
-                source: this.props.source,
-                destination: this.props.destination,
-                price: this.props.price
-            };
-        });
-    }
-
     render() {
-        let flight = this.state.flight;
+        const flight = this.flightController.get(this.state.id);
         return (
             <View style={styles.container}>
                 <Text>{flight.source} to {flight.destination}</Text>
@@ -30,7 +22,7 @@ export default class ViewFlight extends React.Component {
                 <Button
                     title="Manage"
                     onPress={() => {
-                        this.props.navigation.navigate('EditFlight', flight);
+                        this.props.navigation.navigate('EditFlight', flight.id);
                     }}
                 />
             </View>

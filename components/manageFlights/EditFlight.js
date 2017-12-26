@@ -1,10 +1,13 @@
 import React from 'react';
-import {Button, StyleSheet, Text, TextInput, View, Linking} from 'react-native';
+import {Button, StyleSheet, TextInput, View} from 'react-native';
 import {NavigationActions} from "react-navigation";
+import {FlightController} from "../../controller/FlightController";
 
 export default class EditFlight extends React.Component {
     constructor(props) {
         super(props);
+
+        this.flightController = new FlightController();
 
         this.state = {
             id: -1,
@@ -13,9 +16,9 @@ export default class EditFlight extends React.Component {
             price: 0,
         };
 
-        if (this.props.navigation.state.params.id !== undefined) {
-            let flight = this.props.navigation.state.params;
-            this.state.id = flight.id;
+        if (this.props.navigation.state.params !== undefined) {
+            this.state.id = this.props.navigation.state.params;
+            const flight = this.flightController.get(this.state.id);
             this.state.source = flight.source;
             this.state.destination = flight.destination;
             this.state.price = flight.price;
@@ -23,22 +26,16 @@ export default class EditFlight extends React.Component {
     }
 
     editFlight() {
-        let flight = this.state;
-        for (let i = 0; i < global.flights.length; i++) {
-            if (global.flights[i].id === flight.id) {
-                global.flights[i] = flight;
-            }
-        }
+        const flight = this.state;
+        this.flightController.edit(flight);
     }
 
     deleteFlight() {
-        var flight = this.state;
-        var index = global.flights.indexOf(flight);
-        global.flights.splice(index, 1);
+        const flight = this.state;
+        this.flightController.remove(flight);
     }
 
-    static
-    navigationOptions = {
+    static navigationOptions = {
         title: 'Edit flight',
     };
 
@@ -94,20 +91,19 @@ export default class EditFlight extends React.Component {
     }
 }
 
-const
-    styles = StyleSheet.create({
-        container: {
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: 30,
-            margin: 2,
-            alignSelf: 'stretch',
-            borderColor: '#2a4944',
-            borderWidth: 1,
-            backgroundColor: '#d2f7f1'
-        },
-        inputText: {
-            width: 100,
-            height: 30,
-        }
-    });
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 30,
+        margin: 2,
+        alignSelf: 'stretch',
+        borderColor: '#2a4944',
+        borderWidth: 1,
+        backgroundColor: '#d2f7f1'
+    },
+    inputText: {
+        width: 100,
+        height: 30,
+    }
+});

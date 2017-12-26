@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, View} from 'react-native';
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -7,19 +7,18 @@ export default class Home extends React.Component {
     }
 
     render() {
-        const {navigate} = this.props.navigation;
         return (
             <View>
                 <Button
                     title="Flights"
                     onPress={() => {
-                        navigate('Flights')
+                        this.props.navigation.navigate('Flights')
                     }}
                 />
                 <Button
                     title="Manage flights"
                     onPress={() => {
-                        navigate('ManageFlights')
+                        this.props.navigation.navigate('ManageFlights')
                     }}
                 />
             </View>
@@ -27,12 +26,4 @@ export default class Home extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'stretch',
-    },
-});
+const styles = StyleSheet.create({});

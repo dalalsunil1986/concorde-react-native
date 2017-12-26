@@ -1,10 +1,13 @@
 import React from 'react';
-import {Button, StyleSheet, Text, TextInput, View, Linking} from 'react-native';
+import {Button, StyleSheet, TextInput, View, Linking} from 'react-native';
 import {NavigationActions} from "react-navigation";
+import {FlightController} from "../../controller/FlightController";
 
 export default class AddFlight extends React.Component {
     constructor(props) {
         super(props);
+
+        this.flightController = new FlightController();
 
         this.state = {
             id: -1,
@@ -14,17 +17,21 @@ export default class AddFlight extends React.Component {
         };
     }
 
-    addFlight() {
-        let flight = this.state;
-        global.flights.push(flight);
-        let body = "New flight from " + flight.source + " to " +
+    sendMail(flight) {
+        const body = "New flight from " + flight.source + " to " +
             flight.destination + " at $" + flight.price.toString() + ".";
-        console.log(body);
         Linking.openURL(
             "mailto:mirceadino97@gmail.com" +
             "?subject=" + "New flight" +
             "&body=" + body
         );
+    }
+
+    addFlight() {
+        this.state.price = parseInt(this.state.price);
+        const flight = this.state;
+        this.flightController.add(flight);
+        this.sendMail(flight);
     }
 
     static navigationOptions = {

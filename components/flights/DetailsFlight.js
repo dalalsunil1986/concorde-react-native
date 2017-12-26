@@ -1,23 +1,19 @@
 import React from 'react';
-import {Button, StyleSheet, Text, TextInput, View, Linking} from 'react-native';
+import {Button, StyleSheet, TextInput, View} from 'react-native';
+import {FlightController} from "../../controller/FlightController";
 
 export default class EditFlight extends React.Component {
     constructor(props) {
         super(props);
 
+        this.flightController = new FlightController();
+
         this.state = {
             id: -1,
-            source: "",
-            destination: "",
-            price: 0,
         };
 
-        if (this.props.navigation.state.params.id !== undefined) {
-            let flight = this.props.navigation.state.params;
-            this.state.id = flight.id;
-            this.state.source = flight.source;
-            this.state.destination = flight.destination;
-            this.state.price = flight.price;
+        if (this.props.navigation.state.params !== undefined) {
+            this.state.id = this.props.navigation.state.params;
         }
     }
 
@@ -26,24 +22,25 @@ export default class EditFlight extends React.Component {
     };
 
     render() {
+        const flight = this.flightController.get(this.state.id);
         return (
             <View style={styles.container}>
                 <View>
                     <TextInput
                         style={styles.inputText}
-                        value={this.state.source}
+                        value={flight.source}
                         editable={false}
                         onChangeText={(source) => this.setState({source})}
                     />
                     <TextInput
                         style={styles.inputText}
-                        value={this.state.destination}
+                        value={flight.destination}
                         editable={false}
                         onChangeText={(destination) => this.setState({destination})}
                     />
                     <TextInput
                         style={styles.inputText}
-                        value={`${this.state.price}`}
+                        value={`${flight.price}`}
                         keyboardType='numeric'
                         editable={false}
                         onChangeText={(price) => this.setState({price})}
