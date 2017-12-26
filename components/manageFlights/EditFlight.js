@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
+import {Button, StyleSheet, TextInput, View, Alert} from 'react-native';
 import {NavigationActions} from "react-navigation";
 import {FlightController} from "../../controller/FlightController";
 
@@ -19,9 +19,11 @@ export default class EditFlight extends React.Component {
         if (this.props.navigation.state.params !== undefined) {
             this.state.id = this.props.navigation.state.params;
             const flight = this.flightController.get(this.state.id);
-            this.state.source = flight.source;
-            this.state.destination = flight.destination;
-            this.state.price = flight.price;
+            if (flight !== null) {
+                this.state.source = flight.source;
+                this.state.destination = flight.destination;
+                this.state.price = flight.price;
+            }
         }
     }
 
@@ -81,8 +83,21 @@ export default class EditFlight extends React.Component {
                     <Button
                         title="Delete flight"
                         onPress={() => {
-                            this.deleteFlight();
-                            this.goBackToManageFlights();
+                            Alert.alert(
+                                "Delete flight",
+                                "Are you sure you want to delete the flight?",
+                                [{
+                                    text: "Yes", onPress: () => {
+                                        this.props.navigation.goBack();
+                                        this.deleteFlight();
+                                        this.goBackToManageFlights();
+                                    }
+                                }, {
+                                    text: "No", onPress: () => {
+                                    }
+                                }],
+                                {cancelable: false});
+
                         }}
                     />
                 </View>
