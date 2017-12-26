@@ -28,7 +28,7 @@ export default class ViewFlight extends React.Component {
                 <Text>{flight.source} to {flight.destination}</Text>
                 <Text>${flight.price}</Text>
                 <Button
-                    title="Edit"
+                    title="Manage"
                     onPress={() => {
                         this.props.navigation.navigate('EditFlight', flight);
                     }}

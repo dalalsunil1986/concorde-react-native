@@ -16,6 +16,12 @@ export default class Home extends React.Component {
                         navigate('Flights')
                     }}
                 />
+                <Button
+                    title="Manage flights"
+                    onPress={() => {
+                        navigate('ManageFlights')
+                    }}
+                />
             </View>
         );
     }

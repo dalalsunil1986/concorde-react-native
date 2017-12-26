@@ -21,25 +21,8 @@ export default class EditFlight extends React.Component {
         }
     }
 
-    editFlight() {
-        let flight = this.state;
-        for (let i = 0; i < global.flights.length; i++) {
-            if (global.flights[i].id === flight.id) {
-                global.flights[i] = flight;
-                let body = "Flight no. " + flight.id.toString() + " is now from " + flight.source + " to " +
-                    flight.destination + " at $" + flight.price.toString() + ".";
-                console.log(body);
-                Linking.openURL(
-                    "mailto:mirceadino97@gmail.com" +
-                    "?subject=" + "Flight was modified" +
-                    "&body=" + body
-                );
-            }
-        }
-    }
-
     static navigationOptions = {
-        title: 'Edit flight',
+        title: 'Details flight',
     };
 
     render() {
@@ -49,28 +32,28 @@ export default class EditFlight extends React.Component {
                     <TextInput
                         style={styles.inputText}
                         value={this.state.source}
+                        editable={false}
                         onChangeText={(source) => this.setState({source})}
                     />
                     <TextInput
                         style={styles.inputText}
                         value={this.state.destination}
+                        editable={false}
                         onChangeText={(destination) => this.setState({destination})}
                     />
                     <TextInput
                         style={styles.inputText}
                         value={`${this.state.price}`}
                         keyboardType='numeric'
+                        editable={false}
                         onChangeText={(price) => this.setState({price})}
                     />
                 </View>
                 <View>
                     <Button
-                        title="Submit"
+                        title="Back"
                         onPress={() => {
-                            this.editFlight();
                             this.props.navigation.goBack();
-                            this.props.navigation.goBack();
-                            this.props.navigation.navigate('Flights');
                         }}
                     />
                 </View>
