@@ -1,42 +1,86 @@
+import {Alert, AsyncStorage} from 'react-native';
+
 export class FlightController {
     constructor() {
-        this.nextId = 6;
     }
 
-    add(flight) {
-        flight.id = this.nextId;
-        this.nextId += 1;
-        global.flights.push(flight);
+    async _getAndIncrementNextId() {
+        let response = await AsyncStorage.getItem("nextFlightId") || 1;
+        const id = parseInt(response);
+        await AsyncStorage.setItem("nextFlightId", JSON.stringify(id + 1));
+        return id;
     }
 
-    edit(flight) {
-        for (let i = 0; i < global.flights.length; i++) {
-            if (global.flights[i].id === flight.id) {
-                global.flights[i] = flight;
-            }
+    async add(flight) {
+        try {
+            let flights = await this.getAll();
+
+            flight.id = await this._getAndIncrementNextId();
+            flights.push(flight);
+
+            await AsyncStorage.setItem("flights", JSON.stringify(flights));
+
+        } catch (error) {
+            Alert.alert("Error", "There's been a storage error.");
         }
     }
 
-    remove(flight) {
-        for(let i =0; i<global.flights.length; i++) {
-            if (global.flights[i].id === flight.id) {
-                global.flights.splice(i, 1);
-                return;
+    async edit(flight) {
+        try {
+            let flights = await this.getAll();
+
+            for (let i = 0; i < flights.length; i++) {
+                if (flights[i].id === flight.id) {
+                    flights[i] = flight;
+                    break;
+                }
             }
+
+            await AsyncStorage.setItem("flights", JSON.stringify(flights));
+
+        } catch (error) {
+            Alert.alert("Error", "There's been a storage error.");
         }
     }
 
-    get(id) {
-        for (let i = 0; i < global.flights.length; i++) {
-            if (global.flights[i].id === id) {
-                return global.flights[i];
+    async remove(flight) {
+        try {
+            let flights = await this.getAll();
+
+            for (let i = 0; i < flights.length; i++) {
+                if (flights[i].id === flight.id) {
+                    flights.splice(i, 1);
+                    break;
+                }
             }
+
+            await AsyncStorage.setItem("flights", JSON.stringify(flights));
+
+        } catch (error) {
+            Alert.alert("Error", "There's been a storage error.");
         }
-        return null;
     }
 
-    getAll() {
-        return global.flights;
+    async get(id) {
+        try {
+            let flights = await this.getAll();
+
+            for (let i = 0; i < flights.length; i++) {
+                if (flights[i].id === id) {
+                    return flights[i];
+                }
+            }
+
+            return null;
+
+        } catch (error) {
+            Alert.alert("Error", "There's been a storage error.");
+        }
+    }
+
+    async getAll() {
+        let response = await AsyncStorage.getItem("flights");
+        return await JSON.parse(response) || [];
     }
 }
 

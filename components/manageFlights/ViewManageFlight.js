@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {FlightController} from "../../controller/FlightController";
 
-export default class ViewFlight extends React.Component {
+export default class ViewManageFlight extends React.Component {
     constructor(props) {
         super(props);
 
@@ -10,11 +10,29 @@ export default class ViewFlight extends React.Component {
 
         this.state = {
             id: this.props.id,
+            loaded: false,
         };
     }
 
+    async componentDidMount() {
+        const flight = await this.flightController.get(this.state.id);
+        if (flight !== null) {
+            this.setState({
+                flight,
+                loaded: true,
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            loaded: false,
+        });
+    }
+
     render() {
-        const flight = this.flightController.get(this.state.id);
+        if (!this.state.loaded) return null;
+        const flight = this.state.flight;
         return (
             <View style={styles.container}>
                 <Text>{flight.source} to {flight.destination}</Text>
@@ -22,7 +40,9 @@ export default class ViewFlight extends React.Component {
                 <Button
                     title="Manage"
                     onPress={() => {
-                        this.props.navigation.navigate('EditFlight', flight.id);
+                        this.props.navigation.navigate('EditFlight', {
+                            id: flight.id,
+                        });
                     }}
                 />
             </View>

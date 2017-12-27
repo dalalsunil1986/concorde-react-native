@@ -17,7 +17,19 @@ export default class AddFlight extends React.Component {
         };
     }
 
-    sendMail(flight) {
+    async componentDidMount() {
+        this.setState({
+            loaded: true,
+        });
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            loaded: false,
+        });
+    }
+
+    _sendMail(flight) {
         const body = "New flight from " + flight.source + " to " +
             flight.destination + " at $" + flight.price.toString() + ".";
         Linking.openURL(
@@ -27,18 +39,14 @@ export default class AddFlight extends React.Component {
         );
     }
 
-    addFlight() {
+    async _addFlight() {
         this.state.price = parseInt(this.state.price);
         const flight = this.state;
-        this.flightController.add(flight);
-        this.sendMail(flight);
+        await this.flightController.add(flight);
+        this._sendMail(flight);
     }
 
-    static navigationOptions = {
-        title: 'Add flight',
-    };
-
-    goBackToManageFlights() {
+    _goBackToManageFlights() {
         this.props.navigation.dispatch(NavigationActions.reset({
             index: 0,
             actions: [
@@ -49,6 +57,7 @@ export default class AddFlight extends React.Component {
     }
 
     render() {
+        if (!this.state.loaded) return null;
         return (
             <View style={styles.container}>
                 <View>
@@ -73,8 +82,9 @@ export default class AddFlight extends React.Component {
                     <Button
                         title="Add flight"
                         onPress={() => {
-                            this.addFlight();
-                            this.goBackToManageFlights();
+                            this._addFlight().then(() => {
+                                this._goBackToManageFlights();
+                            });
                         }}
                     />
                 </View>

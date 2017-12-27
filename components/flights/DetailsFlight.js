@@ -10,6 +10,7 @@ export default class EditFlight extends React.Component {
 
         this.state = {
             id: -1,
+            loaded: false,
         };
 
         if (this.props.navigation.state.params !== undefined) {
@@ -17,12 +18,25 @@ export default class EditFlight extends React.Component {
         }
     }
 
-    static navigationOptions = {
-        title: 'Details flight',
-    };
+    async componentDidMount() {
+        const flight = await this.flightController.get(this.state.id);
+        if (flight !== null) {
+            this.setState({
+                flight,
+                loaded: true,
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            loaded: false,
+        });
+    }
 
     render() {
-        const flight = this.flightController.get(this.state.id);
+        if (!this.state.loaded) return null;
+        const flight = this.state.flight;
         return (
             <View style={styles.container}>
                 <View>

@@ -8,12 +8,44 @@ import ManageFlights from "./components/manageFlights/ManageFlights";
 import AddFlight from "./components/manageFlights/AddFlight";
 
 export const SimpleApp = StackNavigator({
-    Home: {screen: Home},
-    Flights: {screen: Flights},
-    DetailsFlight: {screen: DetailsFlight, path: 'DetailsFlight/:id'},
-    ManageFlights: {screen: ManageFlights},
-    EditFlight: {screen: EditFlight, path: 'EditFlight/:flight'},
-    AddFlight: {screen: AddFlight},
+    Home: {
+        screen: Home,
+        navigationOptions: {
+            title: 'Concorde',
+        },
+    },
+    Flights: {
+        screen: Flights,
+        navigationOptions: {
+            title: 'Flights',
+        },
+    },
+    DetailsFlight: {
+        screen: DetailsFlight,
+        path: 'DetailsFlight/:id',
+        navigationOptions: {
+            title: 'Details flight',
+        },
+    },
+    ManageFlights: {
+        screen: ManageFlights,
+        navigationOptions: {
+            title: 'Manage flights',
+        },
+    },
+    EditFlight: {
+        screen: EditFlight,
+        path: 'EditFlight/:flight',
+        navigationOptions: {
+            title: 'Edit flight',
+        },
+    },
+    AddFlight: {
+        screen: AddFlight,
+        navigationOptions: {
+            title: 'Add flight',
+        },
+    },
 });
 
 export default class App extends React.Component {

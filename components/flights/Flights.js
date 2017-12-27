@@ -1,5 +1,5 @@
 import React from 'react';
-import {ListView, StyleSheet, View} from 'react-native';
+import {ListView, StyleSheet, Text, View} from 'react-native';
 import ViewFlight from "./ViewFlight";
 import {FlightController} from "../../controller/FlightController";
 
@@ -9,14 +9,34 @@ export default class Flights extends React.Component {
 
         this.flightController = new FlightController();
 
-        const flights = this.flightController.getAll();
         let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.Id !== r2.Id});
         this.state = {
-            dataSource: dataSource.cloneWithRows(flights)
+            loaded: false,
         }
     }
 
-    renderRow(flight) {
+    async componentDidMount() {
+        const flights = await this.flightController.getAll();
+        let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.Id !== r2.Id});
+        this.setState({
+            dataSource: dataSource.cloneWithRows(flights),
+            flights,
+            loaded: true,
+        });
+    }
+
+    async shouldComponentUpdate() {
+        const flights = await this.flightController.getAll();
+        return flights !== this.state.flights;
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            loaded: false,
+        });
+    }
+
+    _renderRow(flight) {
         return (
             <View>
                 <ViewFlight id={flight.id} navigation={this.props.navigation}/>
@@ -24,16 +44,20 @@ export default class Flights extends React.Component {
         );
     }
 
-    static navigationOptions = {
-        title: 'Flights',
-    };
-
     render() {
-        return (
-            <View>
-                <ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)}/>
-            </View>
-        );
+        if (!this.state.loaded) return null;
+        if (this.state.flights.length > 0) {
+            return (
+                <View>
+                    <ListView dataSource={this.state.dataSource} renderRow={this._renderRow.bind(this)}/>
+                </View>);
+
+        } else {
+            return (
+                <View>
+                    <Text>No flights.</Text>
+                </View>);
+        }
     }
 }
 

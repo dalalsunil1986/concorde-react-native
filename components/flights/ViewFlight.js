@@ -10,11 +10,29 @@ export default class ViewFlight extends React.Component {
 
         this.state = {
             id: this.props.id,
+            loaded: false,
         };
     }
 
+    async componentDidMount() {
+        const flight = await this.flightController.get(this.state.id);
+        if (flight !== null) {
+            this.setState({
+                flight: flight,
+                loaded: true,
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            loaded: false,
+        });
+    }
+
     render() {
-        const flight = this.flightController.get(this.state.id);
+        if (!this.state.loaded) return null;
+        const flight = this.state.flight;
         return (
             <View style={styles.container}>
                 <Text>{flight.source} to {flight.destination}</Text>

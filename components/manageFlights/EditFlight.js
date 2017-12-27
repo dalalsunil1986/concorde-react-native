@@ -11,37 +11,52 @@ export default class EditFlight extends React.Component {
 
         this.state = {
             id: -1,
-            source: "",
-            destination: "",
-            price: 0,
+            loaded: false,
         };
 
-        if (this.props.navigation.state.params !== undefined) {
-            this.state.id = this.props.navigation.state.params;
-            const flight = this.flightController.get(this.state.id);
-            if (flight !== null) {
-                this.state.source = flight.source;
-                this.state.destination = flight.destination;
-                this.state.price = flight.price;
-            }
+        if (this.props.navigation.state.params.id !== undefined) {
+            this.state.id = this.props.navigation.state.params.id;
         }
     }
 
-    editFlight() {
-        const flight = this.state;
-        this.flightController.edit(flight);
+    async componentDidMount() {
+        const flight = await this.flightController.get(this.state.id);
+        if (flight !== null) {
+            this.setState({
+                source: flight.source,
+                destination: flight.destination,
+                price: flight.price,
+                loaded: true,
+            });
+        }
     }
 
-    deleteFlight() {
-        const flight = this.state;
-        this.flightController.remove(flight);
+    componentWillUnmount() {
+        this.setState({
+            loaded: false,
+        });
     }
 
-    static navigationOptions = {
-        title: 'Edit flight',
-    };
+    _getFlightFromState() {
+        return {
+            id: this.state.id,
+            source: this.state.source,
+            destination: this.state.destination,
+            price: this.state.price,
+        };
+    }
 
-    goBackToManageFlights() {
+    async _editFlight() {
+        const flight = this._getFlightFromState();
+        await this.flightController.edit(flight);
+    }
+
+    async _deleteFlight() {
+        const flight = this._getFlightFromState();
+        await this.flightController.remove(flight);
+    }
+
+    _goBackToManageFlights() {
         this.props.navigation.dispatch(NavigationActions.reset({
             index: 0,
             actions: [
@@ -52,6 +67,7 @@ export default class EditFlight extends React.Component {
     }
 
     render() {
+        if (!this.state.loaded) return null;
         return (
             <View style={styles.container}>
                 <View>
@@ -76,10 +92,12 @@ export default class EditFlight extends React.Component {
                     <Button
                         title="Edit flight"
                         onPress={() => {
-                            this.editFlight();
-                            this.goBackToManageFlights();
+                            this._editFlight().then(() => {
+                                this._goBackToManageFlights();
+                            });
                         }}
                     />
+
                     <Button
                         title="Delete flight"
                         onPress={() => {
@@ -89,8 +107,9 @@ export default class EditFlight extends React.Component {
                                 [{
                                     text: "Yes", onPress: () => {
                                         this.props.navigation.goBack();
-                                        this.deleteFlight();
-                                        this.goBackToManageFlights();
+                                        this._deleteFlight().then(() => {
+                                            this._goBackToManageFlights();
+                                        });
                                     }
                                 }, {
                                     text: "No", onPress: () => {
