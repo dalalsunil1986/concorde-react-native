@@ -78,41 +78,47 @@ export class FlightController {
         }
     }
 
+    async _populate() {
+        flights = [
+            {
+                id: 1,
+                source: 'Cluj-Napoca',
+                destination: 'Budapest',
+                price: 20,
+            },
+            {
+                id: 2,
+                source: 'Cluj-Napoca',
+                destination: 'Bucharest',
+                price: 30,
+            },
+            {
+                id: 3,
+                source: 'Cluj-Napoca',
+                destination: 'Paris',
+                price: 80,
+            },
+            {
+                id: 4,
+                source: 'Budapest',
+                destination: 'Cluj-Napoca',
+                price: 30,
+            },
+            {
+                id: 5,
+                source: 'Budapest',
+                destination: 'Bucharest',
+                price: 50,
+            },
+        ];
+
+        AsyncStorage.clear();
+        await AsyncStorage.setItem("flights", JSON.stringify(flights));
+        await AsyncStorage.setItem("nextFlightId", JSON.stringify(6));
+    }
+
     async getAll() {
         let response = await AsyncStorage.getItem("flights");
         return await JSON.parse(response) || [];
     }
 }
-
-global.flights = [
-    {
-        id: 1,
-        source: 'Cluj-Napoca',
-        destination: 'Budapest',
-        price: 20,
-    },
-    {
-        id: 2,
-        source: 'Cluj-Napoca',
-        destination: 'Bucharest',
-        price: 30,
-    },
-    {
-        id: 3,
-        source: 'Cluj-Napoca',
-        destination: 'Paris',
-        price: 80,
-    },
-    {
-        id: 4,
-        source: 'Budapest',
-        destination: 'Cluj-Napoca',
-        price: 30,
-    },
-    {
-        id: 5,
-        source: 'Budapest',
-        destination: 'Bucharest',
-        price: 50,
-    },
-];
