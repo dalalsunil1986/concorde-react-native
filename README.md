@@ -1,14 +1,17 @@
-# concorde-react-native
+# concorde
 :airplane: faster than the speed of sound
+
+## [Android](https://github.com/mirceadino/concorde-android) (up-to-date)
+## React Native
 
 **Features:**
 - create an account
-- two types of users: **sparrows** and **ibises**
+- two types of users: **sparrows** and **ibises** 
 - find flights between two locations
 - get stats on the price of the flights
-- find airports closest to you
 - save favourite flights
 - for ibises: add, remove and edit flights
+
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
