@@ -34,8 +34,10 @@ export class FlightController {
         let flight = flight_0;
         flight.source = flight_1.source;
         flight.destination = flight_1.destination;
-        flight.price = parseInt(flight_1.price);
-        flight.allPrices.push(flight.price);
+        if (flight.price !== parseInt(flight_1.price)) {
+            flight.price = parseInt(flight_1.price);
+            flight.allPrices.push(flight.price);
+        }
         return flight;
     }
 

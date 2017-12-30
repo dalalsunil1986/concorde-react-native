@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlightController} from "../../controller/FlightController";
-import {Text, View, StyleSheet} from "react-native";
+import {View, StyleSheet} from "react-native";
 import {StockLine} from 'react-native-pathjs-charts';
 
 export default class DetailsFlightGraph extends React.Component {

@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, StyleSheet, TextInput, View, Linking} from 'react-native';
 import {NavigationActions} from "react-navigation";
 import {FlightController} from "../../controller/FlightController";
+import CityPicker from "./CityPicker";
 
 export default class AddFlight extends React.Component {
     constructor(props) {
@@ -60,16 +61,10 @@ export default class AddFlight extends React.Component {
         if (!this.state.loaded) return null;
         return (
             <View style={styles.container}>
-                <TextInput
-                    style={styles.inputText}
-                    value={this.state.source}
-                    onChangeText={(source) => this.setState({source})}
-                />
-                <TextInput
-                    style={styles.inputText}
-                    value={this.state.destination}
-                    onChangeText={(destination) => this.setState({destination})}
-                />
+                <CityPicker selectedValue={this.state.source}
+                            onValueChange={(value) => this.setState({source: value})}/>
+                <CityPicker selectedValue={this.state.destination}
+                            onValueChange={(value) => this.setState({destination: value})}/>
                 <TextInput
                     style={styles.inputText}
                     value={`${this.state.price}`}
@@ -92,7 +87,6 @@ export default class AddFlight extends React.Component {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'space-between',
-        alignItems: 'center',
         padding: 30,
         margin: 2,
         alignSelf: 'stretch',

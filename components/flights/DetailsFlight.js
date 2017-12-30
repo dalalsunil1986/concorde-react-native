@@ -74,7 +74,6 @@ export default class EditFlight extends React.Component {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'space-between',
-        alignItems: 'center',
         padding: 30,
         margin: 2,
         alignSelf: 'stretch',
