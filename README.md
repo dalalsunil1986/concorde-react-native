@@ -1,8 +1,7 @@
 # concorde
 :airplane: faster than the speed of sound
 
-## [Android](https://github.com/mirceadino/concorde-android) (up-to-date)
-## React Native
+**[Android](https://github.com/mirceadino/concorde-android) | React Native**
 
 **Features:**
 - create an account
