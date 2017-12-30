@@ -60,34 +60,30 @@ export default class AddFlight extends React.Component {
         if (!this.state.loaded) return null;
         return (
             <View style={styles.container}>
-                <View>
-                    <TextInput
-                        style={styles.inputText}
-                        value={this.state.source}
-                        onChangeText={(source) => this.setState({source})}
-                    />
-                    <TextInput
-                        style={styles.inputText}
-                        value={this.state.destination}
-                        onChangeText={(destination) => this.setState({destination})}
-                    />
-                    <TextInput
-                        style={styles.inputText}
-                        value={`${this.state.price}`}
-                        keyboardType='numeric'
-                        onChangeText={(price) => this.setState({price})}
-                    />
-                </View>
-                <View>
-                    <Button
-                        title="Add flight"
-                        onPress={() => {
-                            this._addFlight().then(() => {
-                                this._goBackToManageFlights();
-                            });
-                        }}
-                    />
-                </View>
+                <TextInput
+                    style={styles.inputText}
+                    value={this.state.source}
+                    onChangeText={(source) => this.setState({source})}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    value={this.state.destination}
+                    onChangeText={(destination) => this.setState({destination})}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    value={`${this.state.price}`}
+                    keyboardType='numeric'
+                    onChangeText={(price) => this.setState({price})}
+                />
+                <Button
+                    title="Add flight"
+                    onPress={() => {
+                        this._addFlight().then(() => {
+                            this._goBackToManageFlights();
+                        });
+                    }}
+                />
             </View>
         );
     }

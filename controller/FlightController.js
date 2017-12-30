@@ -16,6 +16,11 @@ export class FlightController {
             let flights = await this.getAll();
 
             flight.id = await this._getAndIncrementNextId();
+            console.log(flight);
+            flight.price = parseInt(flight.price);
+            flight.allPrices = [];
+            flight.allPrices.push(flight.price);
+            console.log(flight);
             flights.push(flight);
 
             await AsyncStorage.setItem("flights", JSON.stringify(flights));
@@ -25,13 +30,22 @@ export class FlightController {
         }
     }
 
+    _mergeFlights(flight_0, flight_1) {
+        let flight = flight_0;
+        flight.source = flight_1.source;
+        flight.destination = flight_1.destination;
+        flight.price = parseInt(flight_1.price);
+        flight.allPrices.push(flight.price);
+        return flight;
+    }
+
     async edit(flight) {
         try {
             let flights = await this.getAll();
 
             for (let i = 0; i < flights.length; i++) {
                 if (flights[i].id === flight.id) {
-                    flights[i] = flight;
+                    flights[i] = this._mergeFlights(flights[i], flight);
                     break;
                 }
             }
@@ -79,36 +93,41 @@ export class FlightController {
     }
 
     async _populate() {
-        flights = [
+        const flights = [
             {
                 id: 1,
                 source: 'Cluj-Napoca',
                 destination: 'Budapest',
                 price: 20,
+                allPrices: [15, 20, 10, 20],
             },
             {
                 id: 2,
                 source: 'Cluj-Napoca',
                 destination: 'Bucharest',
                 price: 30,
+                allPrices: [45, 20, 10, 30],
             },
             {
                 id: 3,
                 source: 'Cluj-Napoca',
                 destination: 'Paris',
                 price: 80,
+                allPrices: [45, 50, 60, 80],
             },
             {
                 id: 4,
                 source: 'Budapest',
                 destination: 'Cluj-Napoca',
                 price: 30,
+                allPrices: [35, 20, 20, 30],
             },
             {
                 id: 5,
                 source: 'Budapest',
                 destination: 'Bucharest',
                 price: 50,
+                allPrices: [45, 30, 10, 50],
             },
         ];
 

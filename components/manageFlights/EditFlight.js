@@ -70,56 +70,53 @@ export default class EditFlight extends React.Component {
         if (!this.state.loaded) return null;
         return (
             <View style={styles.container}>
-                <View>
-                    <TextInput
-                        style={styles.inputText}
-                        value={this.state.source}
-                        onChangeText={(source) => this.setState({source})}
-                    />
-                    <TextInput
-                        style={styles.inputText}
-                        value={this.state.destination}
-                        onChangeText={(destination) => this.setState({destination})}
-                    />
-                    <TextInput
-                        style={styles.inputText}
-                        value={`${this.state.price}`}
-                        keyboardType='numeric'
-                        onChangeText={(price) => this.setState({price})}
-                    />
-                </View>
-                <View>
-                    <Button
-                        title="Edit flight"
-                        onPress={() => {
-                            this._editFlight().then(() => {
-                                this._goBackToManageFlights();
-                            });
-                        }}
-                    />
+                <TextInput
+                    style={styles.inputText}
+                    value={this.state.source}
+                    onChangeText={(source) => this.setState({source})}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    value={this.state.destination}
+                    onChangeText={(destination) => this.setState({destination})}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    value={`${this.state.price}`}
+                    keyboardType='numeric'
+                    onChangeText={(price) => this.setState({price})}
+                />
 
-                    <Button
-                        title="Delete flight"
-                        onPress={() => {
-                            Alert.alert(
-                                "Delete flight",
-                                "Are you sure you want to delete the flight?",
-                                [{
-                                    text: "Yes", onPress: () => {
-                                        this.props.navigation.goBack();
-                                        this._deleteFlight().then(() => {
-                                            this._goBackToManageFlights();
-                                        });
-                                    }
-                                }, {
-                                    text: "No", onPress: () => {
-                                    }
-                                }],
-                                {cancelable: false});
+                <Button
+                    title="Edit flight"
+                    onPress={() => {
+                        this._editFlight().then(() => {
+                            this._goBackToManageFlights();
+                        });
+                    }}
+                />
 
-                        }}
-                    />
-                </View>
+                <Button
+                    title="Delete flight"
+                    onPress={() => {
+                        Alert.alert(
+                            "Delete flight",
+                            "Are you sure you want to delete the flight?",
+                            [{
+                                text: "Yes", onPress: () => {
+                                    this.props.navigation.goBack();
+                                    this._deleteFlight().then(() => {
+                                        this._goBackToManageFlights();
+                                    });
+                                }
+                            }, {
+                                text: "No", onPress: () => {
+                                }
+                            }],
+                            {cancelable: false});
+
+                    }}
+                />
             </View>
         );
     }

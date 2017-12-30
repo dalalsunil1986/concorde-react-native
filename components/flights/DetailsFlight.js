@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
 import {FlightController} from "../../controller/FlightController";
+import DetailsFlightGraph from "./DetailsFlightGraph";
 
 export default class EditFlight extends React.Component {
     constructor(props) {
@@ -39,35 +40,32 @@ export default class EditFlight extends React.Component {
         const flight = this.state.flight;
         return (
             <View style={styles.container}>
-                <View>
-                    <TextInput
-                        style={styles.inputText}
-                        value={flight.source}
-                        editable={false}
-                        onChangeText={(source) => this.setState({source})}
-                    />
-                    <TextInput
-                        style={styles.inputText}
-                        value={flight.destination}
-                        editable={false}
-                        onChangeText={(destination) => this.setState({destination})}
-                    />
-                    <TextInput
-                        style={styles.inputText}
-                        value={`${flight.price}`}
-                        keyboardType='numeric'
-                        editable={false}
-                        onChangeText={(price) => this.setState({price})}
-                    />
-                </View>
-                <View>
-                    <Button
-                        title="Back"
-                        onPress={() => {
-                            this.props.navigation.goBack();
-                        }}
-                    />
-                </View>
+                <TextInput
+                    style={styles.inputText}
+                    value={flight.source}
+                    editable={false}
+                    onChangeText={(source) => this.setState({source})}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    value={flight.destination}
+                    editable={false}
+                    onChangeText={(destination) => this.setState({destination})}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    value={`${flight.price}`}
+                    keyboardType='numeric'
+                    editable={false}
+                    onChangeText={(price) => this.setState({price})}
+                />
+                <DetailsFlightGraph id={flight.id}/>
+                <Button
+                    title="Back"
+                    onPress={() => {
+                        this.props.navigation.goBack();
+                    }}
+                />
             </View>
         );
     }
