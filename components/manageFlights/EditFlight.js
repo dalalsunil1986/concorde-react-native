@@ -99,7 +99,6 @@ export default class EditFlight extends React.Component {
                             "Are you sure you want to delete the flight?",
                             [{
                                 text: "Yes", onPress: () => {
-                                    this.props.navigation.goBack();
                                     this._deleteFlight().then(() => {
                                         this._goBackToManageFlights();
                                     });
