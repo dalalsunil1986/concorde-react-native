@@ -146,8 +146,8 @@ export class FlightService {
     }
 
     getAll() {
-        return this._fetchFlights()
-            .then((response) => this.getAllFromAsyncStorage())
+        setTimeout(() => this._fetchFlights(), 2000);
+        return this.getAllFromAsyncStorage()
     }
 
     getAllFromAsyncStorage() {

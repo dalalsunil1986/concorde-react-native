@@ -85,9 +85,8 @@ export default class EditFlight extends React.Component {
                 <Button
                     title="Edit flight"
                     onPress={() => {
-                        this._editFlight().then(() => {
-                            this._goBackToManageFlights();
-                        });
+                        this._editFlight();
+                        this._goBackToManageFlights();
                     }}
                 />
 
@@ -99,9 +98,8 @@ export default class EditFlight extends React.Component {
                             "Are you sure you want to delete the flight?",
                             [{
                                 text: "Yes", onPress: () => {
-                                    this._deleteFlight().then(() => {
-                                        this._goBackToManageFlights();
-                                    });
+                                    this._deleteFlight();
+                                    this._goBackToManageFlights();
                                 }
                             }, {
                                 text: "No", onPress: () => {
