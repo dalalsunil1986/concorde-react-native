@@ -62,7 +62,7 @@ export class UserService {
 
     authenticateWithGoogle() {
         this.user = null;
-        return Expo.Google.logInAsync({androidClientId: '50636147338-jesp31bj1t7699kus5jmma97jor5j43j.apps.googleusercontent.com'})
+        return Expo.Google.logInAsync({androidClientId: '428634379241-jdbfrs7jv1or94nd9qura8355tcbpunf.apps.googleusercontent.com'})
             .then((response) => {
                 if (response.type === 'success') {
                     const id = response.user.id;
