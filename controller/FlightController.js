@@ -1,4 +1,3 @@
-import {Alert, AsyncStorage} from 'react-native';
 import {FlightService} from '../service/FlightService';
 
 export class FlightController {
@@ -18,24 +17,19 @@ export class FlightController {
         return this.service.remove(flight)
     }
 
-    async get(id) {
-        try {
-            let flights = await this.service.getAllFromAsyncStorage();
-
-            for (let i = 0; i < flights.length; i++) {
-                if (flights[i].id === id) {
-                    return flights[i];
+    get(id) {
+        return this.service.getAllFromAsyncStorage()
+            .then((flights) => {
+                for (let i = 0; i < flights.length; i++) {
+                    if (flights[i].id === id) {
+                        return flights[i];
+                    }
                 }
-            }
-
-            return null;
-
-        } catch (error) {
-            Alert.alert("Error", "There's been a storage error.");
-        }
+                return null;
+            })
     }
 
     getAll() {
-        return this.service.getAll();
+        return this.service.getAll()
     }
 }
