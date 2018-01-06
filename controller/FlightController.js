@@ -2,7 +2,7 @@ import {FlightService} from '../service/FlightService';
 
 export class FlightController {
     constructor() {
-        this.service = new FlightService();
+        this.service = FlightService.getInstance();
     }
 
     add(flight) {

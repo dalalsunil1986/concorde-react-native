@@ -1,6 +1,15 @@
 import {Alert, AsyncStorage} from 'react-native';
 
 export class FlightService {
+    static myInstance = null;
+
+    static getInstance() {
+        if (FlightService.myInstance === null) {
+            FlightService.myInstance = new FlightService();
+        }
+        return FlightService.myInstance;
+    }
+
     constructor() {
         const HOST = "10.152.5.194";
         const PORT = 5000;
