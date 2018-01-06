@@ -5,10 +5,8 @@
 
 **Features:**
 - create an account
-- two types of users: **sparrows** and **ibises** 
-- find flights between two locations
+- two types of users: **sparrows** and **ibises**
 - get stats on the price of the flights
-- save favourite flights
 - for ibises: add, remove and edit flights
 
 
