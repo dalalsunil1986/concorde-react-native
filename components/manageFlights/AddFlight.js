@@ -1,6 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, TextInput, View, Linking} from 'react-native';
-import {NavigationActions} from "react-navigation";
+import {Button, StyleSheet, TextInput, View} from 'react-native';
 import {FlightController} from "../../controller/FlightController";
 import CityPicker from "./CityPicker";
 
@@ -30,31 +29,10 @@ export default class AddFlight extends React.Component {
         });
     }
 
-    _sendMail(flight) {
-        const body = "New flight from " + flight.source + " to " +
-            flight.destination + " at $" + flight.price.toString() + ".";
-        Linking.openURL(
-            "mailto:mirceadino97@gmail.com" +
-            "?subject=" + "New flight" +
-            "&body=" + body
-        );
-    }
-
     async _addFlight() {
         this.state.price = parseInt(this.state.price);
         const flight = this.state;
         await this.flightController.add(flight);
-        this._sendMail(flight);
-    }
-
-    _goBackToManageFlights() {
-        this.props.navigation.dispatch(NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({routeName: 'Home'})
-            ]
-        }));
-        this.props.navigation.navigate('ManageFlights');
     }
 
     render() {
@@ -75,7 +53,7 @@ export default class AddFlight extends React.Component {
                     title="Add flight"
                     onPress={() => {
                         this._addFlight().then(() => {
-                            this._goBackToManageFlights();
+                            this.props.navigation.goBack();
                         });
                     }}
                 />

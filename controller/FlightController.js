@@ -32,4 +32,8 @@ export class FlightController {
     getAll() {
         return this.service.getAll()
     }
+
+    getAllFromAsyncStorage() {
+        return this.service.getAllFromAsyncStorage()
+    }
 }

@@ -9,8 +9,8 @@ export default class Home extends React.Component {
         this.userController = new UserController();
 
         this.state = {
-            username: null,
-            password: null,
+            username: "",
+            password: "",
         }
     }
 

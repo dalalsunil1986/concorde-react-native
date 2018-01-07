@@ -1,4 +1,4 @@
-import {Alert, AsyncStorage} from 'react-native';
+import {Alert} from 'react-native';
 
 export class UserService {
     static myInstance = null;
@@ -11,7 +11,8 @@ export class UserService {
     }
 
     constructor() {
-        const HOST = "10.152.5.194";
+        // const HOST = "10.152.5.194";
+        const HOST = "192.168.43.18";
         const PORT = 5000;
         this.URL = "http://" + HOST + ":" + PORT;
         this.user = null;
