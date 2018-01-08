@@ -1,6 +1,5 @@
 import React from 'react';
 import {Button, StyleSheet, TextInput, View, Alert} from 'react-native';
-import {NavigationActions} from "react-navigation";
 import {FlightController} from "../../controller/FlightController";
 import CityPicker from "./CityPicker";
 
@@ -57,16 +56,6 @@ export default class EditFlight extends React.Component {
         await this.flightController.remove(flight);
     }
 
-    _goBackToManageFlights() {
-        this.props.navigation.dispatch(NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({routeName: 'Home'})
-            ]
-        }));
-        this.props.navigation.navigate('ManageFlights');
-    }
-
     render() {
         if (!this.state.loaded) return null;
         return (
@@ -85,9 +74,8 @@ export default class EditFlight extends React.Component {
                 <Button
                     title="Edit flight"
                     onPress={() => {
-                        this._editFlight().then(() => {
-                            this._goBackToManageFlights();
-                        });
+                        this._editFlight();
+                        this.props.navigation.goBack();
                     }}
                 />
 
@@ -99,10 +87,8 @@ export default class EditFlight extends React.Component {
                             "Are you sure you want to delete the flight?",
                             [{
                                 text: "Yes", onPress: () => {
+                                    this._deleteFlight();
                                     this.props.navigation.goBack();
-                                    this._deleteFlight().then(() => {
-                                        this._goBackToManageFlights();
-                                    });
                                 }
                             }, {
                                 text: "No", onPress: () => {

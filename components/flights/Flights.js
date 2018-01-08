@@ -1,7 +1,8 @@
 import React from 'react';
-import {ListView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import ViewFlight from "./ViewFlight";
 import {FlightController} from "../../controller/FlightController";
+import {FlightService} from "../../service/FlightService";
 
 export default class Flights extends React.Component {
     constructor(props) {
@@ -9,38 +10,50 @@ export default class Flights extends React.Component {
 
         this.flightController = new FlightController();
 
-        let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.Id !== r2.Id});
         this.state = {
             loaded: false,
         }
     }
 
-    async componentDidMount() {
-        const flights = await this.flightController.getAll();
-        let dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.Id !== r2.Id});
-        this.setState({
-            dataSource: dataSource.cloneWithRows(flights),
-            flights,
-            loaded: true,
-        });
+    componentDidMount() {
+        FlightService.getInstance().subscribe(this.update.bind(this));
+        this.flightController.getAll()
+            .then((flights) => {
+                console.log(flights);
+                this.setState({
+                    flights,
+                    loaded: true
+                });
+            })
     }
 
-    async shouldComponentUpdate() {
-        const flights = await this.flightController.getAll();
-        return flights !== this.state.flights;
+    _updateList() {
+        this.setState({loaded: false});
+        this.flightController.getAllFromAsyncStorage()
+            .then((flights) => {
+                console.log(flights);
+                this.setState({
+                    flights,
+                    loaded: true
+                });
+            })
     }
 
     componentWillUnmount() {
+        FlightService.getInstance().unsubscribe(this.update.bind(this));
         this.setState({
             loaded: false,
         });
     }
 
-    _renderRow(flight) {
+    update() {
+        this._updateList()
+    }
+
+    _renderRow(item) {
+        const flight = item.item;
         return (
-            <View>
-                <ViewFlight id={flight.id} navigation={this.props.navigation}/>
-            </View>
+            <ViewFlight id={flight.id} navigation={this.props.navigation}/>
         );
     }
 
@@ -49,7 +62,9 @@ export default class Flights extends React.Component {
         if (this.state.flights.length > 0) {
             return (
                 <View>
-                    <ListView dataSource={this.state.dataSource} renderRow={this._renderRow.bind(this)}/>
+                    <FlatList data={this.state.flights} extraData={this.state}
+                              renderItem={this._renderRow.bind(this)}
+                              keyExtractor={(item) => item.id}/>
                 </View>);
 
         } else {
